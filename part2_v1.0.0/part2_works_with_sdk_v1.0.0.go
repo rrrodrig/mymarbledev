@@ -146,7 +146,7 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 	} else if function == "remove_trade" {									//cancel an open trade order
 		return t.remove_trade(stub, args)
 	}
-	} else if function == "test_func" {									//cancel an open trade order
+	} else if function == "my_set_user" {									//cancel an open trade order
 		res, err := t.my_set_user(stub, args)
 		cleanTrades(stub)													//lets make sure all open trades are still valid
 		return res, err
