@@ -162,28 +162,6 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 	return valAsbytes, nil													//send it onward
 }
 
-
-func (t *SimpleChaincode) myQuery(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	if function != "query" {
-		return nil, errors.New("Invalid query function name. Expecting \"query\"")
-	}
-	var name, jsonResp string
-	var err error
-
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting name of the person to query")
-	}
-
-	name = args[0]
-	valAsbytes, err := stub.GetState(name)									//get the var from chaincode state
-	if err != nil {
-		jsonResp = "{\"Error\":\"Failed to get state for " + name + "\"}"
-		return nil, errors.New(jsonResp)
-	}
-
-	return valAsbytes, nil													//send it onward
-}
-
 func main() {
 	err := shim.Start(new(SimpleChaincode))
 	if err != nil {

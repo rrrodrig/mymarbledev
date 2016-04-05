@@ -70,6 +70,40 @@ func main() {
 	}
 }
 
+
+func (t *SimpleChaincode) my_set_user(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	var err error
+	
+	//   0       1
+	// "name", "bob"
+	if len(args) < 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2")
+	}
+	
+	fmt.Println("- start set user")
+	fmt.Println(args[0] + " - " + args[1])
+	marbleAsBytes, err := stub.GetState(args[0])
+	if err != nil {
+		return nil, errors.New("Failed to get thing")
+	}
+	res := Marble{}
+	json.Unmarshal(marbleAsBytes, &res)										//un stringify it aka JSON.parse()
+	res.User = args[1]														//change the user
+	
+	jsonAsBytes, _ := json.Marshal(res)
+	err = stub.PutState(args[0], jsonAsBytes)								//rewrite the marble with id as key
+	if err != nil {
+		return nil, err
+	}
+	
+	fmt.Println("- end set user")
+	return nil, nil
+}
+
+
+
+
+
 // ============================================================================================================================
 // Init - reset all the things
 // ============================================================================================================================
